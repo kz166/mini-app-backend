@@ -1,32 +1,80 @@
-.PHONY: build deploy invoke-fred invoke-zillow invoke-redfin invoke-census invoke-tax
+.PHONY: build deploy deploy-quick lint lint-py lint-js lint-fix \
+       invoke-fred invoke-zillow invoke-redfin invoke-census invoke-tax \
+       logs-fred logs-zillow logs-redfin logs-census logs-tax
 
-# Build all Lambda functions
+SAM = sam
+STACK = mini-app-etl
+
+# ── Build & Deploy ──────────────────────────────────────────────────
+
 build:
-	sam build
+	$(SAM) build
 
-# Deploy to AWS (first time: use `sam deploy --guided`)
 deploy: build
-	sam deploy
+	$(SAM) deploy --no-confirm-changeset
 
-# Manual invocations for testing
+# Quick deploy: build + deploy without confirmation
+deploy-quick: deploy
+
+# Deploy a single function (rebuild all, but only changed functions update)
+deploy-fn: build
+	$(SAM) deploy --no-confirm-changeset
+
+# ── Linting ─────────────────────────────────────────────────────────
+
+lint: lint-py lint-js
+
+lint-py:
+	python -m ruff check lambdas/
+
+lint-js:
+	cd vercel-api && npx eslint api/ lib/ --ext .js
+
+lint-fix:
+	python -m ruff check lambdas/ --fix
+	cd vercel-api && npx eslint api/ lib/ --ext .js --fix
+
+format:
+	python -m ruff format lambdas/
+
+# ── Invoke (remote, deployed functions) ─────────────────────────────
+
 invoke-fred:
-	sam remote invoke FredMortgageRatesFunction --stack-name mini-app-etl
+	aws lambda invoke --function-name mini-app-fred-mortgage-rates --payload '{}' /dev/stdout
 
 invoke-zillow:
-	sam remote invoke ZillowZhviFunction --stack-name mini-app-etl
+	aws lambda invoke --function-name mini-app-zillow-zhvi --payload '{}' --cli-read-timeout 300 /dev/stdout
 
 invoke-redfin:
-	sam remote invoke RedfinMarketFunction --stack-name mini-app-etl
+	aws lambda invoke --function-name mini-app-redfin-market --payload '{}' --cli-read-timeout 900 /dev/stdout
 
 invoke-census:
-	sam remote invoke CensusDemographicsFunction --stack-name mini-app-etl --event '{"year": 2023}'
+	aws lambda invoke --function-name mini-app-census-demographics --payload '{}' --cli-read-timeout 300 /dev/stdout
 
 invoke-tax:
-	sam remote invoke NjTaxRatesFunction --stack-name mini-app-etl --event-file tax_payload.json
+	aws lambda invoke --function-name mini-app-nj-tax-rates --payload-file tax_payload.json /dev/stdout
 
-# Local testing (requires Docker)
+# ── Logs (last 10 min) ─────────────────────────────────────────────
+
+logs-fred:
+	aws logs tail /aws/lambda/mini-app-fred-mortgage-rates --since 10m --format short
+
+logs-zillow:
+	aws logs tail /aws/lambda/mini-app-zillow-zhvi --since 10m --format short
+
+logs-redfin:
+	aws logs tail /aws/lambda/mini-app-redfin-market --since 10m --format short
+
+logs-census:
+	aws logs tail /aws/lambda/mini-app-census-demographics --since 10m --format short
+
+logs-tax:
+	aws logs tail /aws/lambda/mini-app-nj-tax-rates --since 10m --format short
+
+# ── Local testing (requires Docker) ────────────────────────────────
+
 local-fred:
-	sam local invoke FredMortgageRatesFunction
+	$(SAM) local invoke FredMortgageRatesFunction
 
 local-census:
-	sam local invoke CensusDemographicsFunction --event '{"year": 2023}'
+	$(SAM) local invoke CensusDemographicsFunction --event '{"year": 2023}'

@@ -6,10 +6,10 @@ ON CONFLICT merge-duplicates resolution.
 """
 
 import json
-import os
-import urllib.request
-import urllib.error
 import logging
+import os
+import urllib.error
+import urllib.request
 
 logger = logging.getLogger(__name__)
 
@@ -69,7 +69,7 @@ def upsert(table: str, rows: list[dict], on_conflict: str, batch_size: int = 500
         except urllib.error.HTTPError as e:
             body = e.read().decode("utf-8")
             logger.error(f"Supabase upsert error ({e.code}): {body}")
-            raise RuntimeError(f"Supabase upsert failed for {table}: {e.code} {body}")
+            raise RuntimeError(f"Supabase upsert failed for {table}: {e.code} {body}") from e
 
     return {"inserted": len(rows), "total": total_upserted}
 
@@ -103,4 +103,4 @@ def query(table: str, select: str = "*", filters: str = "") -> list[dict]:
     except urllib.error.HTTPError as e:
         body = e.read().decode("utf-8")
         logger.error(f"Supabase query error ({e.code}): {body}")
-        raise RuntimeError(f"Supabase query failed for {table}: {e.code} {body}")
+        raise RuntimeError(f"Supabase query failed for {table}: {e.code} {body}") from e

@@ -16,10 +16,9 @@ import csv
 import io
 import logging
 import urllib.request
-from datetime import datetime
 
-from shared.supabase_client import upsert
 from shared.logging_utils import lambda_handler_wrapper
+from shared.supabase_client import upsert
 
 logger = logging.getLogger(__name__)
 

@@ -34,9 +34,9 @@ Alternatively, you can pass a flat list under "rates" keyed by town name:
 
 import logging
 
-from shared.config import TOWNS_BY_ID, TOWNS
-from shared.supabase_client import upsert
+from shared.config import TOWNS, TOWNS_BY_ID
 from shared.logging_utils import lambda_handler_wrapper
+from shared.supabase_client import upsert
 
 logger = logging.getLogger(__name__)
 

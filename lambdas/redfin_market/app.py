@@ -1,11 +1,11 @@
 """
 Redfin Market Data Lambda
 
-Streams the Redfin city-level market data TSV.gz (~1.4GB compressed), filters for
+Streams the Redfin city-level market data TSV.gz (~934MB compressed), filters for
 NJ cities matching our 104 towns, and upserts into the market_data table.
 
 Schedule: Monthly, 5th at 08:00 UTC
-Source: https://redfin-public-data.s3.us-west-2.amazonaws.com/redfin_market_tracker/city/us/city_market_tracker.tsv000.gz
+Source: https://redfin-public-data.s3.us-west-2.amazonaws.com/redfin_market_tracker/city_market_tracker.tsv000.gz
 
 Streams line-by-line to avoid loading entire file into memory.
 """
@@ -17,35 +17,37 @@ import logging
 import urllib.request
 
 from shared.config import REDFIN_NAME_TO_ID
-from shared.supabase_client import upsert
 from shared.logging_utils import lambda_handler_wrapper
+from shared.supabase_client import upsert
 
 logger = logging.getLogger(__name__)
 
 REDFIN_URL = (
     "https://redfin-public-data.s3.us-west-2.amazonaws.com/"
-    "redfin_market_tracker/city/us/city_market_tracker.tsv000.gz"
+    "redfin_market_tracker/city_market_tracker.tsv000.gz"
 )
 
-# Redfin column name -> our DB column name
+# Redfin column name (UPPERCASE) -> our DB column name
 COLUMN_MAP = {
-    "median_sale_price": "median_sale_price",
-    "median_list_price": "median_list_price",
-    "median_ppsf": "median_ppsf",
-    "homes_sold": "homes_sold",
-    "new_listings": "new_listings",
-    "inventory": "inventory",
-    "months_of_supply": "months_of_supply",
-    "median_dom": "median_dom",
-    "avg_sale_to_list": "avg_sale_to_list",
-    "sold_above_list_pct": "sold_above_list_pct",
-    "price_drops_pct": "price_drops_pct",
-    "off_market_in_two_weeks_pct": "off_market_in_two_weeks_pct",
+    "MEDIAN_SALE_PRICE": "median_sale_price",
+    "MEDIAN_LIST_PRICE": "median_list_price",
+    "MEDIAN_PPSF": "median_ppsf",
+    "HOMES_SOLD": "homes_sold",
+    "NEW_LISTINGS": "new_listings",
+    "INVENTORY": "inventory",
+    "MONTHS_OF_SUPPLY": "months_of_supply",
+    "MEDIAN_DOM": "median_dom",
+    "AVG_SALE_TO_LIST": "avg_sale_to_list",
+    "SOLD_ABOVE_LIST": "sold_above_list_pct",
+    "PRICE_DROPS": "price_drops_pct",
+    "OFF_MARKET_IN_TWO_WEEKS": "off_market_in_two_weeks_pct",
 }
+
+INT_COLUMNS = {"homes_sold", "new_listings", "inventory", "median_dom"}
 
 
 def safe_float(val: str) -> float | None:
-    if not val or val == "":
+    if not val or val == "" or val == "NA":
         return None
     try:
         return float(val)
@@ -54,7 +56,7 @@ def safe_float(val: str) -> float | None:
 
 
 def safe_int(val: str) -> int | None:
-    if not val or val == "":
+    if not val or val == "" or val == "NA":
         return None
     try:
         return int(float(val))
@@ -69,33 +71,24 @@ def handler(event, context):
     req = urllib.request.Request(REDFIN_URL, headers={"User-Agent": "MiniAppETL/1.0"})
     resp = urllib.request.urlopen(req, timeout=600)
 
-    # Read into memory then decompress (Lambda has enough memory at 3008MB)
-    logger.info("Downloading compressed data...")
-    compressed = resp.read()
-    resp.close()
-    logger.info(f"Downloaded {len(compressed) / 1024 / 1024:.1f} MB compressed")
-
-    decompressed = gzip.decompress(compressed)
-    del compressed  # Free memory
-    logger.info(f"Decompressed to {len(decompressed) / 1024 / 1024:.1f} MB")
-
-    text_stream = io.StringIO(decompressed.decode("utf-8"))
-    del decompressed  # Free memory
-
+    # Stream-decompress to avoid holding entire file in memory
+    logger.info("Streaming download + gzip decompression...")
+    gz_stream = gzip.GzipFile(fileobj=resp)
+    text_stream = io.TextIOWrapper(gz_stream, encoding="utf-8")
     reader = csv.DictReader(text_stream, delimiter="\t")
 
-    rows = []
+    deduped = {}
     matched_towns = set()
     unmatched_nj = set()
     total_nj_lines = 0
 
     for record in reader:
-        state_code = record.get("state_code", "")
+        state_code = record.get("STATE_CODE", "")
         if state_code != "NJ":
             continue
 
         total_nj_lines += 1
-        city = record.get("city", "").strip()
+        city = record.get("CITY", "").strip()
         town_id = REDFIN_NAME_TO_ID.get(city.lower())
 
         if not town_id:
@@ -103,9 +96,9 @@ def handler(event, context):
             continue
 
         matched_towns.add(town_id)
-        period_begin = record.get("period_begin", "")
-        period_end = record.get("period_end", "")
-        property_type = record.get("property_type", "")
+        period_begin = record.get("PERIOD_BEGIN", "")
+        period_end = record.get("PERIOD_END", "")
+        property_type = record.get("PROPERTY_TYPE", "")
 
         if not period_begin or not property_type:
             continue
@@ -120,16 +113,19 @@ def handler(event, context):
         # Numeric fields
         for redfin_col, db_col in COLUMN_MAP.items():
             val = record.get(redfin_col, "")
-            if db_col in ("homes_sold", "new_listings", "inventory", "median_dom"):
+            if db_col in INT_COLUMNS:
                 row[db_col] = safe_int(val)
             else:
                 row[db_col] = safe_float(val)
 
-        rows.append(row)
+        key = (town_id, period_begin, property_type)
+        deduped[key] = row
+
+    rows = list(deduped.values())
 
     logger.info(
         f"NJ lines: {total_nj_lines}, Matched: {len(rows)} rows "
-        f"across {len(matched_towns)} towns"
+        f"(deduped from {len(deduped)} keys) across {len(matched_towns)} towns"
     )
     if unmatched_nj:
         logger.info(f"Unmatched NJ cities in Redfin: {sorted(unmatched_nj)}")

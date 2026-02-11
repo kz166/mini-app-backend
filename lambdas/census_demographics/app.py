@@ -22,12 +22,12 @@ Census Variables:
 
 import json
 import logging
-import urllib.request
 import urllib.error
+import urllib.request
 
-from shared.config import FIPS_TO_ID, BERGEN_FIPS, HUDSON_FIPS, ESSEX_FIPS, STATE_FIPS
-from shared.supabase_client import upsert
+from shared.config import BERGEN_FIPS, ESSEX_FIPS, FIPS_TO_ID, HUDSON_FIPS, STATE_FIPS
 from shared.logging_utils import lambda_handler_wrapper
+from shared.supabase_client import upsert
 
 logger = logging.getLogger(__name__)
 
@@ -71,7 +71,7 @@ def fetch_county(year: int, county_fips: str) -> list[dict]:
     headers = data[0]
     rows = []
     for row in data[1:]:
-        record = dict(zip(headers, row))
+        record = dict(zip(headers, row, strict=False))
         county_sub = record.get("county subdivision", "")
         fips_key = county_fips + county_sub
         town_id = FIPS_TO_ID.get(fips_key)

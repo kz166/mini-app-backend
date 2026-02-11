@@ -17,8 +17,8 @@ import logging
 import urllib.request
 
 from shared.config import ZILLOW_NAME_TO_ID
-from shared.supabase_client import upsert
 from shared.logging_utils import lambda_handler_wrapper
+from shared.supabase_client import upsert
 
 logger = logging.getLogger(__name__)
 
