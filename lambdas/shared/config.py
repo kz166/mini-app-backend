@@ -1,0 +1,265 @@
+"""
+Town configuration for 104 NJ municipalities across Bergen, Hudson, and Essex counties.
+
+Each town entry contains:
+  - id: Supabase towns.id (snake_case slug)
+  - name_en: Official English name
+  - county: County name
+  - county_fips: 3-digit county FIPS
+  - place_fips: 5-digit county subdivision FIPS
+  - redfin_names: List of name variants Redfin may use (e.g., "Teaneck Township")
+  - zillow_name: City name as it appears in Zillow ZHVI CSVs (None if not in Zillow)
+"""
+
+# County FIPS codes
+BERGEN_FIPS = "003"
+HUDSON_FIPS = "017"
+ESSEX_FIPS = "013"
+STATE_FIPS = "34"
+
+TOWNS = [
+    # ── Bergen County (70) ──────────────────────────────────────────────
+    {"id": "allendale", "name_en": "Allendale", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "00700",
+     "redfin_names": ["Allendale"], "zillow_name": "Allendale"},
+    {"id": "alpine", "name_en": "Alpine", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "01090",
+     "redfin_names": ["Alpine"], "zillow_name": "Alpine"},
+    {"id": "bergenfield", "name_en": "Bergenfield", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "05170",
+     "redfin_names": ["Bergenfield"], "zillow_name": "Bergenfield"},
+    {"id": "bogota", "name_en": "Bogota", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "06490",
+     "redfin_names": ["Bogota"], "zillow_name": "Bogota"},
+    {"id": "carlstadt", "name_en": "Carlstadt", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "10480",
+     "redfin_names": ["Carlstadt"], "zillow_name": "Carlstadt"},
+    {"id": "cliffside_park", "name_en": "Cliffside Park", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "13570",
+     "redfin_names": ["Cliffside Park"], "zillow_name": "Cliffside Park"},
+    {"id": "closter", "name_en": "Closter", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "13810",
+     "redfin_names": ["Closter"], "zillow_name": "Closter"},
+    {"id": "cresskill", "name_en": "Cresskill", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "15820",
+     "redfin_names": ["Cresskill"], "zillow_name": "Cresskill"},
+    {"id": "demarest", "name_en": "Demarest", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "17530",
+     "redfin_names": ["Demarest"], "zillow_name": "Demarest"},
+    {"id": "dumont", "name_en": "Dumont", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "18400",
+     "redfin_names": ["Dumont"], "zillow_name": "Dumont"},
+    {"id": "east_rutherford", "name_en": "East Rutherford", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "19510",
+     "redfin_names": ["East Rutherford"], "zillow_name": "East Rutherford"},
+    {"id": "edgewater", "name_en": "Edgewater", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "20020",
+     "redfin_names": ["Edgewater"], "zillow_name": "Edgewater"},
+    {"id": "elmwood_park", "name_en": "Elmwood Park", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "21300",
+     "redfin_names": ["Elmwood Park"], "zillow_name": "Elmwood Park"},
+    {"id": "emerson", "name_en": "Emerson", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "21450",
+     "redfin_names": ["Emerson"], "zillow_name": "Emerson"},
+    {"id": "englewood", "name_en": "Englewood", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "21480",
+     "redfin_names": ["Englewood"], "zillow_name": "Englewood"},
+    {"id": "englewood_cliffs", "name_en": "Englewood Cliffs", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "21510",
+     "redfin_names": ["Englewood Cliffs"], "zillow_name": "Englewood Cliffs"},
+    {"id": "fair_lawn", "name_en": "Fair Lawn", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "22470",
+     "redfin_names": ["Fair Lawn"], "zillow_name": "Fair Lawn"},
+    {"id": "fairview", "name_en": "Fairview", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "22560",
+     "redfin_names": ["Fairview"], "zillow_name": "Fairview"},
+    {"id": "fort_lee", "name_en": "Fort Lee", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "24420",
+     "redfin_names": ["Fort Lee"], "zillow_name": "Fort Lee"},
+    {"id": "franklin_lakes", "name_en": "Franklin Lakes", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "24990",
+     "redfin_names": ["Franklin Lakes"], "zillow_name": "Franklin Lakes"},
+    {"id": "garfield", "name_en": "Garfield", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "25770",
+     "redfin_names": ["Garfield"], "zillow_name": "Garfield"},
+    {"id": "glen_rock", "name_en": "Glen Rock", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "26640",
+     "redfin_names": ["Glen Rock"], "zillow_name": "Glen Rock"},
+    {"id": "hackensack", "name_en": "Hackensack", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "28680",
+     "redfin_names": ["Hackensack"], "zillow_name": "Hackensack"},
+    {"id": "harrington_park", "name_en": "Harrington Park", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "30150",
+     "redfin_names": ["Harrington Park"], "zillow_name": "Harrington Park"},
+    {"id": "hasbrouck_heights", "name_en": "Hasbrouck Heights", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "30420",
+     "redfin_names": ["Hasbrouck Heights"], "zillow_name": "Hasbrouck Heights"},
+    {"id": "haworth", "name_en": "Haworth", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "30540",
+     "redfin_names": ["Haworth"], "zillow_name": "Haworth"},
+    {"id": "hillsdale", "name_en": "Hillsdale", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "31920",
+     "redfin_names": ["Hillsdale"], "zillow_name": "Hillsdale"},
+    {"id": "ho_ho_kus", "name_en": "Ho-Ho-Kus", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "32310",
+     "redfin_names": ["Ho-Ho-Kus", "Ho Ho Kus"], "zillow_name": "Ho-Ho-Kus"},
+    {"id": "leonia", "name_en": "Leonia", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "40020",
+     "redfin_names": ["Leonia"], "zillow_name": "Leonia"},
+    {"id": "little_ferry", "name_en": "Little Ferry", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "40680",
+     "redfin_names": ["Little Ferry"], "zillow_name": "Little Ferry"},
+    {"id": "lodi", "name_en": "Lodi", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "41100",
+     "redfin_names": ["Lodi"], "zillow_name": "Lodi"},
+    {"id": "lyndhurst", "name_en": "Lyndhurst", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "42090",
+     "redfin_names": ["Lyndhurst", "Lyndhurst Township"], "zillow_name": "Lyndhurst"},
+    {"id": "mahwah", "name_en": "Mahwah", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "42750",
+     "redfin_names": ["Mahwah", "Mahwah Township"], "zillow_name": "Mahwah"},
+    {"id": "maywood", "name_en": "Maywood", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "44880",
+     "redfin_names": ["Maywood"], "zillow_name": "Maywood"},
+    {"id": "midland_park", "name_en": "Midland Park", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "46110",
+     "redfin_names": ["Midland Park"], "zillow_name": "Midland Park"},
+    {"id": "montvale", "name_en": "Montvale", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "47610",
+     "redfin_names": ["Montvale"], "zillow_name": "Montvale"},
+    {"id": "moonachie", "name_en": "Moonachie", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "47700",
+     "redfin_names": ["Moonachie"], "zillow_name": "Moonachie"},
+    {"id": "new_milford", "name_en": "New Milford", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "51660",
+     "redfin_names": ["New Milford"], "zillow_name": "New Milford"},
+    {"id": "north_arlington", "name_en": "North Arlington", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "52320",
+     "redfin_names": ["North Arlington"], "zillow_name": "North Arlington"},
+    {"id": "northvale", "name_en": "Northvale", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "53430",
+     "redfin_names": ["Northvale"], "zillow_name": "Northvale"},
+    {"id": "norwood", "name_en": "Norwood", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "53610",
+     "redfin_names": ["Norwood"], "zillow_name": "Norwood"},
+    {"id": "oakland", "name_en": "Oakland", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "53850",
+     "redfin_names": ["Oakland"], "zillow_name": "Oakland"},
+    {"id": "old_tappan", "name_en": "Old Tappan", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "54870",
+     "redfin_names": ["Old Tappan"], "zillow_name": "Old Tappan"},
+    {"id": "oradell", "name_en": "Oradell", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "54990",
+     "redfin_names": ["Oradell"], "zillow_name": "Oradell"},
+    {"id": "palisades_park", "name_en": "Palisades Park", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "55770",
+     "redfin_names": ["Palisades Park"], "zillow_name": "Palisades Park"},
+    {"id": "paramus", "name_en": "Paramus", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "55950",
+     "redfin_names": ["Paramus"], "zillow_name": "Paramus"},
+    {"id": "park_ridge", "name_en": "Park Ridge", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "56130",
+     "redfin_names": ["Park Ridge"], "zillow_name": "Park Ridge"},
+    {"id": "ramsey", "name_en": "Ramsey", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "61680",
+     "redfin_names": ["Ramsey"], "zillow_name": "Ramsey"},
+    {"id": "ridgefield", "name_en": "Ridgefield", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "62910",
+     "redfin_names": ["Ridgefield"], "zillow_name": "Ridgefield"},
+    {"id": "ridgefield_park", "name_en": "Ridgefield Park", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "62940",
+     "redfin_names": ["Ridgefield Park"], "zillow_name": "Ridgefield Park"},
+    {"id": "ridgewood", "name_en": "Ridgewood", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "63000",
+     "redfin_names": ["Ridgewood"], "zillow_name": "Ridgewood"},
+    {"id": "river_edge", "name_en": "River Edge", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "63360",
+     "redfin_names": ["River Edge"], "zillow_name": "River Edge"},
+    {"id": "river_vale", "name_en": "River Vale", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "63690",
+     "redfin_names": ["River Vale", "River Vale Township"], "zillow_name": "River Vale"},
+    {"id": "rochelle_park", "name_en": "Rochelle Park", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "63990",
+     "redfin_names": ["Rochelle Park"], "zillow_name": "Rochelle Park"},
+    {"id": "rockleigh", "name_en": "Rockleigh", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "64170",
+     "redfin_names": ["Rockleigh"], "zillow_name": None},
+    {"id": "rutherford", "name_en": "Rutherford", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "65280",
+     "redfin_names": ["Rutherford"], "zillow_name": "Rutherford"},
+    {"id": "saddle_brook", "name_en": "Saddle Brook", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "65340",
+     "redfin_names": ["Saddle Brook", "Saddle Brook Township"], "zillow_name": "Saddle Brook"},
+    {"id": "saddle_river", "name_en": "Saddle River", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "65400",
+     "redfin_names": ["Saddle River"], "zillow_name": "Saddle River"},
+    {"id": "south_hackensack", "name_en": "South Hackensack", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "68970",
+     "redfin_names": ["South Hackensack"], "zillow_name": None},
+    {"id": "teaneck", "name_en": "Teaneck", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "72360",
+     "redfin_names": ["Teaneck", "Teaneck Township"], "zillow_name": "Teaneck"},
+    {"id": "tenafly", "name_en": "Tenafly", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "72420",
+     "redfin_names": ["Tenafly"], "zillow_name": "Tenafly"},
+    {"id": "teterboro", "name_en": "Teterboro", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "72480",
+     "redfin_names": ["Teterboro"], "zillow_name": None},
+    {"id": "upper_saddle_river", "name_en": "Upper Saddle River", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "75140",
+     "redfin_names": ["Upper Saddle River"], "zillow_name": "Upper Saddle River"},
+    {"id": "waldwick", "name_en": "Waldwick", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "76400",
+     "redfin_names": ["Waldwick"], "zillow_name": "Waldwick"},
+    {"id": "wallington", "name_en": "Wallington", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "76490",
+     "redfin_names": ["Wallington"], "zillow_name": "Wallington"},
+    {"id": "washington_twp_bergen", "name_en": "Washington", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "77135",
+     "redfin_names": ["Washington Township"], "zillow_name": None},
+    {"id": "westwood", "name_en": "Westwood", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "80270",
+     "redfin_names": ["Westwood"], "zillow_name": "Westwood"},
+    {"id": "woodcliff_lake", "name_en": "Woodcliff Lake", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "82300",
+     "redfin_names": ["Woodcliff Lake"], "zillow_name": "Woodcliff Lake"},
+    {"id": "wood_ridge", "name_en": "Wood-Ridge", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "82570",
+     "redfin_names": ["Wood-Ridge", "Wood Ridge"], "zillow_name": "Wood-Ridge"},
+    {"id": "wyckoff", "name_en": "Wyckoff", "county": "Bergen", "county_fips": BERGEN_FIPS, "place_fips": "83050",
+     "redfin_names": ["Wyckoff", "Wyckoff Township"], "zillow_name": "Wyckoff"},
+
+    # ── Hudson County (12) ──────────────────────────────────────────────
+    {"id": "bayonne", "name_en": "Bayonne", "county": "Hudson", "county_fips": HUDSON_FIPS, "place_fips": "03580",
+     "redfin_names": ["Bayonne"], "zillow_name": "Bayonne"},
+    {"id": "east_newark", "name_en": "East Newark", "county": "Hudson", "county_fips": HUDSON_FIPS, "place_fips": "19360",
+     "redfin_names": ["East Newark"], "zillow_name": None},
+    {"id": "guttenberg", "name_en": "Guttenberg", "county": "Hudson", "county_fips": HUDSON_FIPS, "place_fips": "28650",
+     "redfin_names": ["Guttenberg"], "zillow_name": "Guttenberg"},
+    {"id": "harrison", "name_en": "Harrison", "county": "Hudson", "county_fips": HUDSON_FIPS, "place_fips": "30210",
+     "redfin_names": ["Harrison"], "zillow_name": "Harrison"},
+    {"id": "hoboken", "name_en": "Hoboken", "county": "Hudson", "county_fips": HUDSON_FIPS, "place_fips": "32250",
+     "redfin_names": ["Hoboken"], "zillow_name": "Hoboken"},
+    {"id": "jersey_city", "name_en": "Jersey City", "county": "Hudson", "county_fips": HUDSON_FIPS, "place_fips": "36000",
+     "redfin_names": ["Jersey City"], "zillow_name": "Jersey City"},
+    {"id": "kearny", "name_en": "Kearny", "county": "Hudson", "county_fips": HUDSON_FIPS, "place_fips": "36510",
+     "redfin_names": ["Kearny", "Kearny Town"], "zillow_name": "Kearny"},
+    {"id": "north_bergen", "name_en": "North Bergen", "county": "Hudson", "county_fips": HUDSON_FIPS, "place_fips": "52470",
+     "redfin_names": ["North Bergen", "North Bergen Township"], "zillow_name": "North Bergen"},
+    {"id": "secaucus", "name_en": "Secaucus", "county": "Hudson", "county_fips": HUDSON_FIPS, "place_fips": "66570",
+     "redfin_names": ["Secaucus"], "zillow_name": "Secaucus"},
+    {"id": "union_city", "name_en": "Union City", "county": "Hudson", "county_fips": HUDSON_FIPS, "place_fips": "74630",
+     "redfin_names": ["Union City"], "zillow_name": "Union City"},
+    {"id": "weehawken", "name_en": "Weehawken", "county": "Hudson", "county_fips": HUDSON_FIPS, "place_fips": "77930",
+     "redfin_names": ["Weehawken", "Weehawken Township"], "zillow_name": "Weehawken"},
+    {"id": "west_new_york", "name_en": "West New York", "county": "Hudson", "county_fips": HUDSON_FIPS, "place_fips": "79610",
+     "redfin_names": ["West New York"], "zillow_name": "West New York"},
+
+    # ── Essex County (22) ───────────────────────────────────────────────
+    {"id": "belleville", "name_en": "Belleville", "county": "Essex", "county_fips": ESSEX_FIPS, "place_fips": "04695",
+     "redfin_names": ["Belleville", "Belleville Township"], "zillow_name": "Belleville"},
+    {"id": "bloomfield", "name_en": "Bloomfield", "county": "Essex", "county_fips": ESSEX_FIPS, "place_fips": "06260",
+     "redfin_names": ["Bloomfield", "Bloomfield Township"], "zillow_name": "Bloomfield"},
+    {"id": "caldwell", "name_en": "Caldwell", "county": "Essex", "county_fips": ESSEX_FIPS, "place_fips": "09250",
+     "redfin_names": ["Caldwell"], "zillow_name": "Caldwell"},
+    {"id": "cedar_grove", "name_en": "Cedar Grove", "county": "Essex", "county_fips": ESSEX_FIPS, "place_fips": "11200",
+     "redfin_names": ["Cedar Grove", "Cedar Grove Township"], "zillow_name": "Cedar Grove"},
+    {"id": "city_of_orange", "name_en": "City of Orange", "county": "Essex", "county_fips": ESSEX_FIPS, "place_fips": "13045",
+     "redfin_names": ["Orange", "City of Orange Township", "City of Orange"], "zillow_name": "Orange"},
+    {"id": "east_orange", "name_en": "East Orange", "county": "Essex", "county_fips": ESSEX_FIPS, "place_fips": "19390",
+     "redfin_names": ["East Orange"], "zillow_name": "East Orange"},
+    {"id": "essex_fells", "name_en": "Essex Fells", "county": "Essex", "county_fips": ESSEX_FIPS, "place_fips": "21840",
+     "redfin_names": ["Essex Fells"], "zillow_name": "Essex Fells"},
+    {"id": "fairfield_essex", "name_en": "Fairfield", "county": "Essex", "county_fips": ESSEX_FIPS, "place_fips": "22385",
+     "redfin_names": ["Fairfield"], "zillow_name": None},
+    {"id": "glen_ridge", "name_en": "Glen Ridge", "county": "Essex", "county_fips": ESSEX_FIPS, "place_fips": "26610",
+     "redfin_names": ["Glen Ridge"], "zillow_name": "Glen Ridge"},
+    {"id": "irvington", "name_en": "Irvington", "county": "Essex", "county_fips": ESSEX_FIPS, "place_fips": "34450",
+     "redfin_names": ["Irvington", "Irvington Township"], "zillow_name": "Irvington"},
+    {"id": "livingston", "name_en": "Livingston", "county": "Essex", "county_fips": ESSEX_FIPS, "place_fips": "40890",
+     "redfin_names": ["Livingston", "Livingston Township"], "zillow_name": "Livingston"},
+    {"id": "maplewood", "name_en": "Maplewood", "county": "Essex", "county_fips": ESSEX_FIPS, "place_fips": "43800",
+     "redfin_names": ["Maplewood", "Maplewood Township"], "zillow_name": "Maplewood"},
+    {"id": "millburn", "name_en": "Millburn", "county": "Essex", "county_fips": ESSEX_FIPS, "place_fips": "46380",
+     "redfin_names": ["Millburn", "Millburn Township", "Short Hills"], "zillow_name": "Millburn"},
+    {"id": "montclair", "name_en": "Montclair", "county": "Essex", "county_fips": ESSEX_FIPS, "place_fips": "47500",
+     "redfin_names": ["Montclair", "Montclair Township"], "zillow_name": "Montclair"},
+    {"id": "newark", "name_en": "Newark", "county": "Essex", "county_fips": ESSEX_FIPS, "place_fips": "51000",
+     "redfin_names": ["Newark"], "zillow_name": "Newark"},
+    {"id": "north_caldwell", "name_en": "North Caldwell", "county": "Essex", "county_fips": ESSEX_FIPS, "place_fips": "52620",
+     "redfin_names": ["North Caldwell"], "zillow_name": "North Caldwell"},
+    {"id": "nutley", "name_en": "Nutley", "county": "Essex", "county_fips": ESSEX_FIPS, "place_fips": "53680",
+     "redfin_names": ["Nutley", "Nutley Township"], "zillow_name": "Nutley"},
+    {"id": "roseland", "name_en": "Roseland", "county": "Essex", "county_fips": ESSEX_FIPS, "place_fips": "64590",
+     "redfin_names": ["Roseland"], "zillow_name": "Roseland"},
+    {"id": "south_orange", "name_en": "South Orange", "county": "Essex", "county_fips": ESSEX_FIPS, "place_fips": "69274",
+     "redfin_names": ["South Orange", "South Orange Village"], "zillow_name": "South Orange"},
+    {"id": "verona", "name_en": "Verona", "county": "Essex", "county_fips": ESSEX_FIPS, "place_fips": "75815",
+     "redfin_names": ["Verona"], "zillow_name": "Verona"},
+    {"id": "west_caldwell", "name_en": "West Caldwell", "county": "Essex", "county_fips": ESSEX_FIPS, "place_fips": "78510",
+     "redfin_names": ["West Caldwell", "West Caldwell Township"], "zillow_name": "West Caldwell"},
+    {"id": "west_orange", "name_en": "West Orange", "county": "Essex", "county_fips": ESSEX_FIPS, "place_fips": "79800",
+     "redfin_names": ["West Orange", "West Orange Township"], "zillow_name": "West Orange"},
+]
+
+# ── Lookup helpers ──────────────────────────────────────────────────────
+
+# town_id -> town dict
+TOWNS_BY_ID = {t["id"]: t for t in TOWNS}
+
+# Redfin city name (lowered) -> town_id
+REDFIN_NAME_TO_ID = {}
+for t in TOWNS:
+    for name in t["redfin_names"]:
+        REDFIN_NAME_TO_ID[name.lower()] = t["id"]
+
+# Zillow city name (lowered) -> town_id
+ZILLOW_NAME_TO_ID = {}
+for t in TOWNS:
+    if t["zillow_name"]:
+        ZILLOW_NAME_TO_ID[t["zillow_name"].lower()] = t["id"]
+
+# Census FIPS (county_fips + place_fips) -> town_id
+FIPS_TO_ID = {}
+for t in TOWNS:
+    fips_key = t["county_fips"] + t["place_fips"]
+    FIPS_TO_ID[fips_key] = t["id"]
+
+# All town IDs as a set
+ALL_TOWN_IDS = frozenset(t["id"] for t in TOWNS)
+
+# County groups
+BERGEN_TOWNS = [t for t in TOWNS if t["county"] == "Bergen"]
+HUDSON_TOWNS = [t for t in TOWNS if t["county"] == "Hudson"]
+ESSEX_TOWNS = [t for t in TOWNS if t["county"] == "Essex"]

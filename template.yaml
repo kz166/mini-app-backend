@@ -1,0 +1,134 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Real Estate Mini App - ETL Pipeline for 104 NJ municipalities
+
+Parameters:
+  SupabaseUrl:
+    Type: String
+    Description: Supabase project URL (e.g., https://xxxx.supabase.co)
+  SupabaseServiceKeyParam:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /mini-app/supabase-service-key
+    Description: SSM parameter path for Supabase service_role key
+
+Globals:
+  Function:
+    Runtime: python3.12
+    Architectures:
+      - x86_64
+    Environment:
+      Variables:
+        SUPABASE_URL: !Ref SupabaseUrl
+        SUPABASE_SERVICE_KEY: !Ref SupabaseServiceKeyParam
+
+Resources:
+  # ── Shared Layer ──────────────────────────────────────────────────────
+  SharedLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: mini-app-shared
+      Description: Shared config, Supabase client, and logging for ETL lambdas
+      ContentUri: lambdas/shared/
+      CompatibleRuntimes:
+        - python3.12
+
+  # ── FRED Mortgage Rates ───────────────────────────────────────────────
+  FredMortgageRatesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: mini-app-fred-mortgage-rates
+      Handler: app.handler
+      CodeUri: lambdas/fred_mortgage_rates/
+      MemorySize: 256
+      Timeout: 60
+      Layers:
+        - !Ref SharedLayer
+      Events:
+        WeeklySchedule:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 8 ? * FRI *)
+            Description: Weekly FRED mortgage rate refresh (Fridays 8am UTC)
+            Enabled: true
+
+  # ── Zillow ZHVI ───────────────────────────────────────────────────────
+  ZillowZhviFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: mini-app-zillow-zhvi
+      Handler: app.handler
+      CodeUri: lambdas/zillow_zhvi/
+      MemorySize: 1024
+      Timeout: 300
+      Layers:
+        - !Ref SharedLayer
+      Events:
+        MonthlySchedule:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 8 18 * ? *)
+            Description: Monthly Zillow ZHVI refresh (18th at 8am UTC)
+            Enabled: true
+
+  # ── Redfin Market Data ────────────────────────────────────────────────
+  RedfinMarketFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: mini-app-redfin-market
+      Handler: app.handler
+      CodeUri: lambdas/redfin_market/
+      MemorySize: 3008
+      Timeout: 900
+      Layers:
+        - !Ref SharedLayer
+      Events:
+        MonthlySchedule:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 8 5 * ? *)
+            Description: Monthly Redfin market data refresh (5th at 8am UTC)
+            Enabled: true
+
+  # ── Census Demographics ───────────────────────────────────────────────
+  CensusDemographicsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: mini-app-census-demographics
+      Handler: app.handler
+      CodeUri: lambdas/census_demographics/
+      MemorySize: 256
+      Timeout: 120
+      Layers:
+        - !Ref SharedLayer
+      Events:
+        AnnualSchedule:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 8 1 10 ? *)
+            Description: Annual Census ACS refresh (Oct 1 at 8am UTC)
+            Enabled: true
+
+  # ── NJ Tax Rates ──────────────────────────────────────────────────────
+  NjTaxRatesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: mini-app-nj-tax-rates
+      Handler: app.handler
+      CodeUri: lambdas/nj_tax_rates/
+      MemorySize: 256
+      Timeout: 60
+      Layers:
+        - !Ref SharedLayer
+      # No scheduled event - manual trigger only
+
+Outputs:
+  FredMortgageRatesArn:
+    Value: !GetAtt FredMortgageRatesFunction.Arn
+  ZillowZhviArn:
+    Value: !GetAtt ZillowZhviFunction.Arn
+  RedfinMarketArn:
+    Value: !GetAtt RedfinMarketFunction.Arn
+  CensusDemographicsArn:
+    Value: !GetAtt CensusDemographicsFunction.Arn
+  NjTaxRatesArn:
+    Value: !GetAtt NjTaxRatesFunction.Arn

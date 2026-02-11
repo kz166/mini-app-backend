@@ -1,0 +1,21 @@
+{
+  "name": "real-estate-mini-app-backend",
+  "version": "1.0.0",
+  "description": "Survey API backend for Real Estate Mini App",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test-connection.js",
+    "query": "node scripts/query-surveys.js",
+    "deploy": "vercel --prod",
+    "dev": "vercel dev",
+    "env": "vercel env ls"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "mongodb": "^7.0.0"
+  }
+}
