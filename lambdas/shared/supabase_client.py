@@ -63,8 +63,7 @@ def upsert(table: str, rows: list[dict], on_conflict: str, batch_size: int = 500
                     total_upserted += len(batch)
 
                 logger.info(
-                    f"Upserted batch {i // batch_size + 1} into {table}: "
-                    f"{len(batch)} rows"
+                    f"Upserted batch {i // batch_size + 1} into {table}: " f"{len(batch)} rows"
                 )
         except urllib.error.HTTPError as e:
             body = e.read().decode("utf-8")
@@ -99,7 +98,8 @@ def query(table: str, select: str = "*", filters: str = "") -> list[dict]:
 
     try:
         with urllib.request.urlopen(req) as resp:
-            return json.loads(resp.read().decode("utf-8"))
+            result: list[dict] = json.loads(resp.read().decode("utf-8"))
+            return result
     except urllib.error.HTTPError as e:
         body = e.read().decode("utf-8")
         logger.error(f"Supabase query error ({e.code}): {body}")

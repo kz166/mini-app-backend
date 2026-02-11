@@ -22,14 +22,8 @@ from shared.supabase_client import upsert
 
 logger = logging.getLogger(__name__)
 
-FRED_30YR_URL = (
-    "https://fred.stlouisfed.org/graph/fredgraph.csv"
-    "?id=MORTGAGE30US&cosd=2020-01-01"
-)
-FRED_15YR_URL = (
-    "https://fred.stlouisfed.org/graph/fredgraph.csv"
-    "?id=MORTGAGE15US&cosd=2020-01-01"
-)
+FRED_30YR_URL = "https://fred.stlouisfed.org/graph/fredgraph.csv" "?id=MORTGAGE30US&cosd=2020-01-01"
+FRED_15YR_URL = "https://fred.stlouisfed.org/graph/fredgraph.csv" "?id=MORTGAGE15US&cosd=2020-01-01"
 
 
 def fetch_fred_csv(url: str) -> dict[str, float]:
@@ -66,7 +60,7 @@ def handler(event, context):
     all_dates = sorted(set(rates_30yr.keys()) | set(rates_15yr.keys()))
     rows = []
     for date_str in all_dates:
-        row = {"date": date_str}
+        row: dict[str, str | float] = {"date": date_str}
         if date_str in rates_30yr:
             row["rate_30yr"] = rates_30yr[date_str]
         if date_str in rates_15yr:

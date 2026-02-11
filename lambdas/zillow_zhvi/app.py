@@ -47,7 +47,7 @@ def handler(event, context):
     logger.info(f"Downloaded {len(text)} bytes")
 
     reader = csv.DictReader(io.StringIO(text))
-    headers = reader.fieldnames or []
+    headers = list(reader.fieldnames or [])
     date_cols = parse_date_columns(headers)
     logger.info(f"Found {len(date_cols)} date columns (from {date_cols[0]} to {date_cols[-1]})")
 
@@ -78,12 +78,14 @@ def handler(event, context):
             except ValueError:
                 continue
 
-            rows.append({
-                "town_id": town_id,
-                "date": date_col,
-                "zhvi_value": zhvi_value,
-                "home_type": "all_homes",
-            })
+            rows.append(
+                {
+                    "town_id": town_id,
+                    "date": date_col,
+                    "zhvi_value": zhvi_value,
+                    "home_type": "all_homes",
+                }
+            )
 
     logger.info(f"Matched {len(matched_towns)} towns, {len(rows)} data points")
     if skipped_nj:

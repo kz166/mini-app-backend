@@ -130,9 +130,7 @@ def handler(event, context):
     if unmatched_nj:
         logger.info(f"Unmatched NJ cities in Redfin: {sorted(unmatched_nj)}")
 
-    result = upsert(
-        "market_data", rows, on_conflict="town_id,period_begin,property_type"
-    )
+    result = upsert("market_data", rows, on_conflict="town_id,period_begin,property_type")
 
     return {
         "nj_lines_total": total_nj_lines,

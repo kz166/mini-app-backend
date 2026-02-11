@@ -35,16 +35,16 @@ ACS_BASE = "https://api.census.gov/data/{year}/acs/acs5"
 
 VARIABLES = (
     "NAME,"
-    "B01003_001E,"   # population
-    "B19013_001E,"   # median_income
-    "B25077_001E,"   # median_home_value
-    "B01002_001E,"   # median_age
-    "B03002_003E,"   # white_alone_not_hispanic
-    "B03002_006E,"   # asian_alone_not_hispanic
-    "B03002_012E,"   # hispanic_or_latino
-    "B03002_004E,"   # black_alone_not_hispanic
-    "B08013_001E,"   # aggregate_travel_time
-    "B08303_001E"    # total_commuters
+    "B01003_001E,"  # population
+    "B19013_001E,"  # median_income
+    "B25077_001E,"  # median_home_value
+    "B01002_001E,"  # median_age
+    "B03002_003E,"  # white_alone_not_hispanic
+    "B03002_006E,"  # asian_alone_not_hispanic
+    "B03002_012E,"  # hispanic_or_latino
+    "B03002_004E,"  # black_alone_not_hispanic
+    "B08013_001E,"  # aggregate_travel_time
+    "B08303_001E"  # total_commuters
 )
 
 
@@ -128,20 +128,22 @@ def fetch_county(year: int, county_fips: str) -> list[dict]:
         if agg_travel and total_commuters and total_commuters > 0:
             commute_time_avg = round(agg_travel / total_commuters, 1)
 
-        rows.append({
-            "town_id": town_id,
-            "year": year,
-            "population": population,
-            "median_income": median_income,
-            "median_home_value": median_home_value,
-            "median_age": median_age,
-            "ethnic_white_pct": ethnic_white_pct,
-            "ethnic_asian_pct": ethnic_asian_pct,
-            "ethnic_hispanic_pct": ethnic_hispanic_pct,
-            "ethnic_black_pct": ethnic_black_pct,
-            "ethnic_other_pct": ethnic_other_pct,
-            "commute_time_avg": commute_time_avg,
-        })
+        rows.append(
+            {
+                "town_id": town_id,
+                "year": year,
+                "population": population,
+                "median_income": median_income,
+                "median_home_value": median_home_value,
+                "median_age": median_age,
+                "ethnic_white_pct": ethnic_white_pct,
+                "ethnic_asian_pct": ethnic_asian_pct,
+                "ethnic_hispanic_pct": ethnic_hispanic_pct,
+                "ethnic_black_pct": ethnic_black_pct,
+                "ethnic_other_pct": ethnic_other_pct,
+                "commute_time_avg": commute_time_avg,
+            }
+        )
 
     return rows
 

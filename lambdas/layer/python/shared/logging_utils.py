@@ -18,9 +18,7 @@ def setup_logging(level=logging.INFO):
         logger.removeHandler(handler)
 
     handler = logging.StreamHandler()
-    handler.setFormatter(
-        logging.Formatter("%(asctime)s %(levelname)s %(name)s %(message)s")
-    )
+    handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(name)s %(message)s"))
     logger.addHandler(handler)
     return logger
 
@@ -32,6 +30,7 @@ def lambda_handler_wrapper(func):
     - Timing
     - Error handling with proper response format
     """
+
     @wraps(func)
     def wrapper(event, context):
         logger = setup_logging()
@@ -47,12 +46,14 @@ def lambda_handler_wrapper(func):
 
             return {
                 "statusCode": 200,
-                "body": json.dumps({
-                    "success": True,
-                    "function": function_name,
-                    "elapsed_seconds": round(elapsed, 1),
-                    "result": result,
-                }),
+                "body": json.dumps(
+                    {
+                        "success": True,
+                        "function": function_name,
+                        "elapsed_seconds": round(elapsed, 1),
+                        "result": result,
+                    }
+                ),
             }
         except Exception as e:
             elapsed = time.time() - start
@@ -60,12 +61,14 @@ def lambda_handler_wrapper(func):
 
             return {
                 "statusCode": 500,
-                "body": json.dumps({
-                    "success": False,
-                    "function": function_name,
-                    "elapsed_seconds": round(elapsed, 1),
-                    "error": str(e),
-                }),
+                "body": json.dumps(
+                    {
+                        "success": False,
+                        "function": function_name,
+                        "elapsed_seconds": round(elapsed, 1),
+                        "error": str(e),
+                    }
+                ),
             }
 
     return wrapper

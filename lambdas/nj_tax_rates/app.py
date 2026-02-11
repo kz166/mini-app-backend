@@ -60,14 +60,16 @@ def handler(event, context):
                 logger.warning(f"Unknown town_id: {town_id}, skipping")
                 continue
 
-            rows.append({
-                "town_id": town_id,
-                "year": year,
-                "general_tax_rate": entry.get("general_tax_rate"),
-                "effective_tax_rate": entry.get("effective_tax_rate"),
-                "equalization_ratio": entry.get("equalization_ratio"),
-                "avg_residential_tax": entry.get("avg_residential_tax"),
-            })
+            rows.append(
+                {
+                    "town_id": town_id,
+                    "year": year,
+                    "general_tax_rate": entry.get("general_tax_rate"),
+                    "effective_tax_rate": entry.get("effective_tax_rate"),
+                    "equalization_ratio": entry.get("equalization_ratio"),
+                    "avg_residential_tax": entry.get("avg_residential_tax"),
+                }
+            )
 
     # Format 2: Dict keyed by town name
     elif "rates_by_name" in event:
@@ -77,14 +79,16 @@ def handler(event, context):
                 logger.warning(f"Unknown town name: {name}, skipping")
                 continue
 
-            rows.append({
-                "town_id": town_id,
-                "year": year,
-                "general_tax_rate": data.get("general_tax_rate"),
-                "effective_tax_rate": data.get("effective_tax_rate"),
-                "equalization_ratio": data.get("equalization_ratio"),
-                "avg_residential_tax": data.get("avg_residential_tax"),
-            })
+            rows.append(
+                {
+                    "town_id": town_id,
+                    "year": year,
+                    "general_tax_rate": data.get("general_tax_rate"),
+                    "effective_tax_rate": data.get("effective_tax_rate"),
+                    "equalization_ratio": data.get("equalization_ratio"),
+                    "avg_residential_tax": data.get("avg_residential_tax"),
+                }
+            )
     else:
         raise ValueError("Event must contain 'rates' or 'rates_by_name'")
 

@@ -1,9 +1,16 @@
-.PHONY: build deploy deploy-quick lint lint-py lint-js lint-fix \
+.PHONY: build deploy lint lint-py lint-js lint-fix typecheck format \
        invoke-fred invoke-zillow invoke-redfin invoke-census invoke-tax \
        logs-fred logs-zillow logs-redfin logs-census logs-tax
 
 SAM = sam
 STACK = mini-app-etl
+PY_DIRS = lambdas/
+MYPY_TARGETS = lambdas/layer/python/shared/ \
+               lambdas/census_demographics/app.py \
+               lambdas/fred_mortgage_rates/app.py \
+               lambdas/zillow_zhvi/app.py \
+               lambdas/redfin_market/app.py \
+               lambdas/nj_tax_rates/app.py
 
 # ── Build & Deploy ──────────────────────────────────────────────────
 
@@ -13,29 +20,31 @@ build:
 deploy: build
 	$(SAM) deploy --no-confirm-changeset
 
-# Quick deploy: build + deploy without confirmation
-deploy-quick: deploy
-
-# Deploy a single function (rebuild all, but only changed functions update)
-deploy-fn: build
-	$(SAM) deploy --no-confirm-changeset
-
 # ── Linting ─────────────────────────────────────────────────────────
 
-lint: lint-py lint-js
+# Run all checks (ruff + isort + black + mypy + eslint)
+lint: lint-py typecheck lint-js
 
 lint-py:
-	python -m ruff check lambdas/
+	python -m ruff check $(PY_DIRS)
+	python -m isort --check-only $(PY_DIRS)
+	python -m black --check $(PY_DIRS)
 
 lint-js:
-	cd vercel-api && npx eslint api/ lib/ --ext .js
+	cd vercel-api && npx eslint api/ lib/
 
+typecheck:
+	python -m mypy $(MYPY_TARGETS) --explicit-package-bases
+
+# Auto-fix Python lint + formatting
 lint-fix:
-	python -m ruff check lambdas/ --fix
-	cd vercel-api && npx eslint api/ lib/ --ext .js --fix
+	python -m ruff check $(PY_DIRS) --fix
+	python -m isort $(PY_DIRS)
+	python -m black $(PY_DIRS)
 
 format:
-	python -m ruff format lambdas/
+	python -m isort $(PY_DIRS)
+	python -m black $(PY_DIRS)
 
 # ── Invoke (remote, deployed functions) ─────────────────────────────
 
