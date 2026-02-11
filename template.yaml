@@ -6,20 +6,16 @@ Parameters:
   SupabaseUrl:
     Type: String
     Description: Supabase project URL (e.g., https://xxxx.supabase.co)
-  SupabaseServiceKeyParam:
-    Type: AWS::SSM::Parameter::Value<String>
-    Default: /mini-app/supabase-service-key
-    Description: SSM parameter path for Supabase service_role key
 
 Globals:
   Function:
-    Runtime: python3.12
+    Runtime: python3.13
     Architectures:
       - x86_64
     Environment:
       Variables:
         SUPABASE_URL: !Ref SupabaseUrl
-        SUPABASE_SERVICE_KEY: !Ref SupabaseServiceKeyParam
+        SUPABASE_SERVICE_KEY: '{{resolve:ssm:/mini-app/supabase-service-key}}'
 
 Resources:
   # ── Shared Layer ──────────────────────────────────────────────────────
@@ -28,9 +24,9 @@ Resources:
     Properties:
       LayerName: mini-app-shared
       Description: Shared config, Supabase client, and logging for ETL lambdas
-      ContentUri: lambdas/shared/
+      ContentUri: lambdas/layer/
       CompatibleRuntimes:
-        - python3.12
+        - python3.13
 
   # ── FRED Mortgage Rates ───────────────────────────────────────────────
   FredMortgageRatesFunction:

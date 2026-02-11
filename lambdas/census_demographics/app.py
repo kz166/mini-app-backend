@@ -25,10 +25,6 @@ import logging
 import urllib.request
 import urllib.error
 
-import sys
-import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-
 from shared.config import FIPS_TO_ID, BERGEN_FIPS, HUDSON_FIPS, ESSEX_FIPS, STATE_FIPS
 from shared.supabase_client import upsert
 from shared.logging_utils import lambda_handler_wrapper

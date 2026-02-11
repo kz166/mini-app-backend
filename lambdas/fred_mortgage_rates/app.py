@@ -18,10 +18,6 @@ import logging
 import urllib.request
 from datetime import datetime
 
-import sys
-import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-
 from shared.supabase_client import upsert
 from shared.logging_utils import lambda_handler_wrapper
 
